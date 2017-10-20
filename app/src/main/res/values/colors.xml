@@ -31,8 +31,8 @@
     <color name="app_bg_color4">#F2F2F2</color>
     <color name="app_btn_color">#dedede</color>
     <color name="app_title_color">#f9f9f9</color>
-
-    <color name="common_color">#ff7f0c</color>
+    <color name="lined8d8d8">#d8d8d8</color>
+    <color name="common_color">#FF3e82</color>
 
     <color name="light_red">#FD8F8D</color>
     <color name="red_money_out">#fb1935</color>

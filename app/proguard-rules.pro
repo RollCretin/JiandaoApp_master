@@ -102,6 +102,9 @@ public boolean *(android.webkit.WebView, java.lang.String); }
 public void *(android.webkit.WebView, jav.lang.String); }
 #----------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------
+#android-gif-drawable
+-keep public class pl.droidsonroids.gif.GifIOException{<init>(int);}
+-keep class pl.droidsonroids.gif.GifInfoHandle{<init>(long,int,int,int);}
 
 
 

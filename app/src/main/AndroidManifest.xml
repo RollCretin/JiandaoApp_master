@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.jiandao">
+          package="com.cretin">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -29,6 +29,8 @@
         <activity
             android:name=".ui.manager.MainActivityManager"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.ShowBigPicActivity">
+        </activity>
     </application>
 
 </manifest>

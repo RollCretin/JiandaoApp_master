@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <ImageView
+        android:src="@mipmap/pic_default"
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="101dp"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="2dp"
+        android:maxLines="4"
+        android:minLines="4"
+        android:padding="10dp"
+        android:text="在发现澳大利亚的黑天鹅之前，“黑天鹅”曾经是他们言谈和写作中的惯师者， 所以传道受业解......"
+        android:textColor="#9b9b9b"
+        android:textSize="@dimen/text_size_14"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="7dp"
+        android:lineSpacingExtra="2dp"
+        android:paddingRight="10dp"
+        android:text="8月20日 23:00"
+        android:textColor="#9b9b9b"
+        android:textSize="@dimen/text_size_10"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_weight="1"
+            android:drawableLeft="@mipmap/small_wifi"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="2dp"
+            android:paddingRight="10dp"
+            android:text="DETER RAMS"
+            android:textColor="#9b9b9b"
+            android:textSize="@dimen/text_size_10"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:drawableLeft="@mipmap/maisui"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:lineSpacingExtra="2dp"
+            android:paddingRight="10dp"
+            android:text="333"
+            android:textColor="#9b9b9b"
+            android:textSize="@dimen/text_size_10"/>
+    </LinearLayout>
+
+</LinearLayout>
