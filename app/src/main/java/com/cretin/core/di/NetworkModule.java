@@ -29,20 +29,22 @@ public class NetworkModule {
     private static final String OKCLIENT_DISK_CACHE_NAME = "http-cache";
 
     private static OkHttpClient _createOkHttpClient(Context context) {
+        CookiesManager cookiesManager = new CookiesManager(context);
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .connectTimeout(15000L, TimeUnit.MILLISECONDS)
                 .readTimeout(20000L, TimeUnit.MILLISECONDS)
                 .writeTimeout(15000L, TimeUnit.MILLISECONDS);
 
-        if ( BuildConfig.DEBUG) {
-            builder.addInterceptor(new StethoInterceptor())
-                    .addInterceptor(new HttpLoggingInterceptor()
-                            .setLevel(HttpLoggingInterceptor.Level.BODY))
+        if ( BuildConfig.DEBUG ) {
+            builder.addNetworkInterceptor(new StethoInterceptor())
+                    .addInterceptor(new LogInterceptor())
+                    .cookieJar(cookiesManager)
                     .cache(new Cache(
                             new File(context.getExternalCacheDir(), OKCLIENT_DISK_CACHE_NAME),
                             OKCLIENT_DISK_CACHE_SIZE));
         } else {
-            builder.cache(
+            builder.cookieJar(cookiesManager)
+                    .cache(
                     new Cache(new File(context.getCacheDir(), OKCLIENT_DISK_CACHE_NAME),
                             OKCLIENT_DISK_CACHE_SIZE));
         }
@@ -73,7 +75,7 @@ public class NetworkModule {
                     }
                 }).build();
 
-        if (BuildConfig.DEBUG) {
+        if ( BuildConfig.DEBUG ) {
             picasso.setIndicatorsEnabled(true);
         }
 

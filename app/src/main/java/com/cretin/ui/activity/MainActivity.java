@@ -1,13 +1,17 @@
 package com.cretin.ui.activity;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import com.cretin.R;
 import com.cretin.core.di.qualifier.ClientVersionCode;
@@ -15,8 +19,9 @@ import com.cretin.ui.base.BaseActivity;
 import com.cretin.ui.base.BaseFragment;
 import com.cretin.ui.base.KV;
 import com.cretin.ui.base.LocalStorageKeys;
-import com.cretin.ui.fragment.InfoFragment;
+import com.cretin.ui.fragment.home.CommonHomeFragment;
 import com.cretin.ui.fragment.home.HomeFragment;
+import com.cretin.ui.fragment.user.MeFragment;
 import com.cretin.view.NoScrollViewPager;
 
 import java.util.HashMap;
@@ -34,6 +39,14 @@ public class MainActivity extends BaseActivity {
     int _versionCode;
     @Bind( R.id.view_pager )
     NoScrollViewPager viewPager;
+    @Bind( R.id.ll_left )
+    LinearLayout llLeft;
+    @Bind( R.id.ll_right )
+    LinearLayout llRight;
+    @Bind( R.id.selection_container )
+    LinearLayout selectionContainer;
+    @Bind( R.id.send_container )
+    RelativeLayout sendContainer;
     @Bind( R.id.rb_home )
     RadioButton rbHome;
     @Bind( R.id.rb_product )
@@ -46,6 +59,11 @@ public class MainActivity extends BaseActivity {
     RadioGroup rgGroup;
     @Bind( R.id.iv_add )
     ImageView ivAdd;
+    @Bind( R.id.container_rg_group )
+    RelativeLayout containerRgGroup;
+
+    private Animation animation1;
+    private Animation animation2;
 
     private Map<Integer, BaseFragment> mFragments = new HashMap();
 
@@ -63,6 +81,20 @@ public class MainActivity extends BaseActivity {
             //ViewPager缓存4个界面
             viewPager.setOffscreenPageLimit(4);
             rgGroup.check(R.id.rb_home);
+
+            // 加载动画
+            animation1 = AnimationUtils.loadAnimation(this,
+                    R.anim.send_selection_enter);
+            animation2 = AnimationUtils.loadAnimation(this,
+                    R.anim.send_selection_exit);
+
+            //防止事件透穿
+            sendContainer.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
         }
     }
 
@@ -110,9 +142,46 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    @OnClick( R.id.iv_add )
-    public void onViewClicked() {
-        startActivity(new Intent(this,ShowBigPicActivity.class));
+    @OnClick( {R.id.iv_add, R.id.ll_left, R.id.ll_right} )
+    public void onViewClicked(View view) {
+        switch ( view.getId() ) {
+            case R.id.ll_left:
+                //文字类型
+
+                break;
+            case R.id.ll_right:
+
+                //图片类型
+                break;
+            case R.id.iv_add:
+                if ( sendContainer.getVisibility() == View.INVISIBLE ) {
+                    sendContainer.setVisibility(View.VISIBLE);
+                    selectionContainer.startAnimation(animation1);
+                    // 开始动画
+                } else {
+                    selectionContainer.startAnimation(animation2);
+                    new Thread() {
+                        public void run() {
+                            //这儿是耗时操作，完成之后更新UI；
+                            try {
+                                Thread.sleep(300);
+                            } catch ( InterruptedException e ) {
+                                e.printStackTrace();
+                            }
+                            runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    //更新UI
+                                    sendContainer.setVisibility(View.INVISIBLE);
+                                }
+
+                            });
+                        }
+                    }.start();
+                }
+                break;
+        }
     }
 
 
@@ -154,11 +223,11 @@ public class MainActivity extends BaseActivity {
             if ( position == 0 ) {
                 fragment = new HomeFragment();
             } else if ( position == 1 ) {
-                fragment = new InfoFragment();
+                fragment = CommonHomeFragment.newInstance(CommonHomeFragment.TYPE_CONTENT, false);
             } else if ( position == 2 ) {
-                fragment = new InfoFragment();
+                fragment = CommonHomeFragment.newInstance(CommonHomeFragment.TYPE_IMG, false);
             } else if ( position == 3 ) {
-                fragment = new InfoFragment();
+                fragment = new MeFragment();
             }
             if ( fragment != null ) {
                 mFragments.put(position, fragment);// 把创建好的Fragment存放到集合中缓存起来

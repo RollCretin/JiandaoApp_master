@@ -1,10 +1,8 @@
 package com.cretin.data.api.service;
 
 
-import com.cretin.data.api.model.GetCodeModel;
-import com.cretin.data.api.model.InfoModel;
-import com.cretin.data.api.model.LoginModel;
 import com.cretin.data.api.model.ResultModel;
+import com.cretin.data.api.model.UserModel;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -15,17 +13,6 @@ import rx.Observable;
  * Created by grubber on 2017/1/6.
  */
 public interface UserService {
-    @FormUrlEncoded
-    @POST( "/jokes/jokesList.action" )
-//    name=手机&price=999
-    Observable<GetCodeModel> test(@Field( "page" ) String page);
-
-    /**
-     * 测试
-     * @return
-     */
-    @POST( "/weixin/app/active" )
-    Observable<ResultModel<InfoModel>> list();
 
     /**
      * 用户登录
@@ -35,28 +22,38 @@ public interface UserService {
      * @return
      */
     @FormUrlEncoded
-    @POST( "/login/doLogin" )
-    Observable<LoginModel> login(@Field( "userName" ) String userName, @Field( "password" ) String password);
+    @POST( "/user/login" )
+    Observable<ResultModel<UserModel>> login(@Field( "username" ) String userName, @Field( "password" ) String password);
+
+    /**
+     * 用户退出登录
+     *
+     * @return
+     */
+    @POST( "/user/logout" )
+    Observable<ResultModel<UserModel>> logout();
 
     /**
      * 获取验证码
      *
-     * @param mobilePhone
+     * @param phone
      * @return
      */
     @FormUrlEncoded
-    @POST( "/reg/getCheckNumber" )
-    Observable<GetCodeModel> getCode(@Field( "mobilePhone" ) String mobilePhone);
+    @POST( "/user/reg/sendcode" )
+    Observable<ResultModel> getCode(@Field( "phone" ) String phone);
 
     /**
      * 注册
      *
-     * @param mobilePhone
+     * @param phone
+     * @param password
+     * @param code
      * @return
      */
     @FormUrlEncoded
-    @POST( "/reg/save" )
-    Observable<GetCodeModel> register(@Field( "mobilePhone" ) String mobilePhone,
+    @POST( "/user/reg/register" )
+    Observable<ResultModel> register(@Field( "phone" ) String phone,
                                       @Field( "password" ) String password,
-                                      @Field( "checkNumber" ) String checkNumber);
+                                      @Field( "code" ) String code);
 }

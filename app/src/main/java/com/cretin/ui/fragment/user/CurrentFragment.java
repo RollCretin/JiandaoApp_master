@@ -11,9 +11,6 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.cretin.R;
-import com.cretin.core.di.HttpSubscriber;
-import com.cretin.core.di.SubscriberOnNextListener;
-import com.cretin.data.api.model.GetCodeModel;
 import com.cretin.data.api.service.UserService;
 import com.cretin.ui.base.BaseFragment;
 import com.cretin.util.ToastHelper;
@@ -25,7 +22,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
-import rx.Subscription;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,24 +73,24 @@ public class CurrentFragment extends BaseFragment {
         adapter.setNotDoAnimationCount(3);
         recyclerview.setAdapter(adapter);
 
-        Subscription subscribe = binds(_topService.test("1")).subscribe(new HttpSubscriber<GetCodeModel>
-                (new SubscriberOnNextListener<GetCodeModel>() {
-                    @Override
-                    public void onNext(GetCodeModel o) {
-                        _toastHelper.show(o.getName());
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        stopDialog();
-                    }
-
-                    @Override
-                    public void onError(Throwable e, int type) {
-
-                    }
-                }, this));
-        addSubscription(subscribe);
+//        Subscription subscribe = binds(_topService.test("1")).subscribe(new HttpSubscriber<GetCodeModel>
+//                (new SubscriberOnNextListener<GetCodeModel>() {
+//                    @Override
+//                    public void onNext(GetCodeModel o) {
+//                        _toastHelper.show(o.getName());
+//                    }
+//
+//                    @Override
+//                    public void onCompleted() {
+//                        stopDialog();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e, int type) {
+//
+//                    }
+//                }, this));
+//        addSubscription(subscribe);
     }
 
     @Override

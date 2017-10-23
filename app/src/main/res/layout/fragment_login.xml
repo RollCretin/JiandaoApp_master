@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.jiandao.ui.fragment.user.LoginFragment">
+    android:orientation="vertical">
 
     <com.cretin.www.clearedittext.view.ClearEditText
         android:layout_width="match_parent"
@@ -13,9 +12,9 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:drawablePadding="10dp"
-        android:inputType="phone"
+        android:inputType="text"
         android:drawableLeft="@mipmap/phone_icon"
-        android:hint="请输入手机号码"
+        android:hint="请输入手机号码/用户名"
         android:paddingBottom="18dp"
         android:paddingLeft="16dp"
         android:paddingTop="18dp"

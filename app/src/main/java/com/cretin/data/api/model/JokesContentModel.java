@@ -80,6 +80,15 @@ public class JokesContentModel {
         private String userId;
         private String content;
         private String showTime;
+        private int hasSpot;
+
+        public int getHasSpot() {
+            return hasSpot;
+        }
+
+        public void setHasSpot(int hasSpot) {
+            this.hasSpot = hasSpot;
+        }
 
         public OrignUserBean getOrignUser() {
             return orignUser;

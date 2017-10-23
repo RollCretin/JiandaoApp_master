@@ -80,6 +80,15 @@ public class JokesImgModel {
         private String content;
         private String imageUrl;
         private String showTime;
+        private int hasSpot;
+
+        public int getHasSpot() {
+            return hasSpot;
+        }
+
+        public void setHasSpot(int hasSpot) {
+            this.hasSpot = hasSpot;
+        }
 
         public OrignUserBean getOrignUser() {
             return orignUser;
@@ -149,10 +158,10 @@ public class JokesImgModel {
 
             private String userId;
             private String username;
-            private Object avatar;
+            private String avatar;
             private String nickname;
-            private Object age;
-            private Object sex;
+            private int age;
+            private int sex;
 
             public String getUserId() {
                 return userId;
@@ -170,11 +179,11 @@ public class JokesImgModel {
                 this.username = username;
             }
 
-            public Object getAvatar() {
+            public String getAvatar() {
                 return avatar;
             }
 
-            public void setAvatar(Object avatar) {
+            public void setAvatar(String avatar) {
                 this.avatar = avatar;
             }
 
@@ -186,19 +195,19 @@ public class JokesImgModel {
                 this.nickname = nickname;
             }
 
-            public Object getAge() {
+            public int getAge() {
                 return age;
             }
 
-            public void setAge(Object age) {
+            public void setAge(int age) {
                 this.age = age;
             }
 
-            public Object getSex() {
+            public int getSex() {
                 return sex;
             }
 
-            public void setSex(Object sex) {
+            public void setSex(int sex) {
                 this.sex = sex;
             }
         }

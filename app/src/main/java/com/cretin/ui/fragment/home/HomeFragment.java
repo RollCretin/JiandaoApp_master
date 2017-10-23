@@ -59,8 +59,8 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void initData() {
         mFragments = new ArrayList<>();
-        mFragments.add(CommonHomeFragment.newInstance(CommonHomeFragment.TYPE_CONTENT));
-        mFragments.add(CommonHomeFragment.newInstance(CommonHomeFragment.TYPE_IMG));
+        mFragments.add(CommonHomeFragment.newInstance(CommonHomeFragment.TYPE_CONTENT, true));
+        mFragments.add(CommonHomeFragment.newInstance(CommonHomeFragment.TYPE_IMG, true));
         adapter = new TabAdapter(mActivity.getSupportFragmentManager(), mFragments);
         viewpager.setAdapter(adapter);
         viewpager.setOffscreenPageLimit(2);

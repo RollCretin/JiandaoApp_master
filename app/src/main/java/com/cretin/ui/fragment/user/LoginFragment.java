@@ -1,7 +1,6 @@
 package com.cretin.ui.fragment.user;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -9,11 +8,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cretin.R;
+import com.cretin.core.EventBus;
 import com.cretin.core.di.HttpSubscriber;
 import com.cretin.core.di.SubscriberOnNextListener;
-import com.cretin.data.api.model.LoginModel;
+import com.cretin.data.api.model.ResultModel;
+import com.cretin.data.api.model.UserModel;
 import com.cretin.data.api.service.UserService;
-import com.cretin.ui.activity.MainActivity;
+import com.cretin.interfaces.eventbus.NotifyMeChange;
 import com.cretin.ui.base.BackFragmentActivity;
 import com.cretin.ui.base.BaseFragment;
 import com.cretin.ui.base.KV;
@@ -105,17 +106,18 @@ public class LoginFragment extends BaseFragment {
             return;
         }
         showDialog("正在登录");
-        Subscription subscribe = binds(_topService.login(userName, password)).subscribe(new HttpSubscriber<LoginModel>
-                (new SubscriberOnNextListener<LoginModel>() {
+        Subscription subscribe = binds(_topService.login(userName, password)).subscribe(new HttpSubscriber<ResultModel<UserModel>>
+                (new SubscriberOnNextListener<ResultModel<UserModel>>() {
                     @Override
-                    public void onNext(LoginModel o) {
+                    public void onNext(ResultModel<UserModel> o) {
                         _toastHelper.show(o.getMessage());
-                        if ( o.isIsOk() ) {
-                            if ( o.getLoginAccount() != null )
-                                KV.put(LocalStorageKeys.APP_USER_INFO, o.getLoginAccount());
-                            Intent intent = new Intent(mActivity, MainActivity.class);
-                            mActivity.startActivity(intent);
+                        if ( o.getCode() == 1 ) {
+                            if ( o.getData() != null ) {
+                                KV.put(LocalStorageKeys.APP_USER_INFO, o.getData());
+                                KV.put(LocalStorageKeys.APP_USER_ID, o.getData().getUserId());
+                            }
                             (( BackFragmentActivity ) mActivity).closeAllFragment();
+                            EventBus.getInstance().post(new NotifyMeChange());
                         }
                     }
 

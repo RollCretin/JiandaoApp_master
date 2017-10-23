@@ -4,79 +4,156 @@
                 android:layout_height="match_parent"
                 android:background="#FFFFFF">
 
-    <LinearLayout
+    <com.cretin.view.NoScrollViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_above="@+id/container_rg_group"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="-8dp"
+        android:layout_weight="1"/>
 
-        <com.cretin.view.NoScrollViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="-8dp"
-            android:layout_weight="1"/>
+    <RelativeLayout
+        android:id="@+id/send_container"
+        android:layout_marginBottom="-8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/container_rg_group"
+        android:background="#ffffff"
+        android:visibility="invisible">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/selection_container">
 
-            <RadioGroup
-                android:id="@+id/rg_group"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/app_background_color"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_home"
-                    style="@style/BottomTabStyle"
-                    android:checked="false"
-                    android:drawableTop="@drawable/btn_tab_home_selector"
-                    android:text="首页"/>
-
-                <RadioButton
-                    android:id="@+id/rb_product"
-                    style="@style/BottomTabStyle"
-                    android:drawableTop="@drawable/btn_tab_duanzi_selector"
-                    android:text="段子"/>
-
-                <ImageView
-                    style="@style/BottomTabStyle"
-                    android:src="@mipmap/home_add"
-                    android:visibility="invisible"
-                    />
-
-                <RadioButton
-                    android:id="@+id/rb_message"
-                    style="@style/BottomTabStyle"
-                    android:drawableTop="@drawable/btn_tab_qutu_selector"
-                    android:text="趣图"/>
-
-                <RadioButton
-                    android:id="@+id/rb_me"
-                    style="@style/BottomTabStyle"
-                    android:drawableTop="@drawable/btn_tab_me_selector"
-                    android:text="我的"/>
-            </RadioGroup>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_above="@+id/rg_group"
-                android:background="@color/app_bg_color"/>
-
-            <ImageView
-                android:id="@+id/iv_add"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/home_add"
-                />
+                android:gravity="center"
+                android:lineSpacingExtra="4dp"
+                android:text="请选择你要发布的\n段子类型"
+                android:textColor="@color/common_color"
+                android:textSize="20sp"/>
         </RelativeLayout>
-    </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/selection_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="70dp">
+
+            <LinearLayout
+                android:id="@+id/ll_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="35dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/wenzitype"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="文字类型"
+                    android:textColor="#64BADF"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.cretin.view.CircleImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/tupiantype"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="图片类型"
+                    android:textColor="#64BADF"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_rg_group"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true">
+
+        <RadioGroup
+            android:id="@+id/rg_group"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_background_color"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_home"
+                style="@style/BottomTabStyle"
+                android:checked="false"
+                android:drawableTop="@drawable/btn_tab_home_selector"
+                android:text="首页"/>
+
+            <RadioButton
+                android:id="@+id/rb_product"
+                style="@style/BottomTabStyle"
+                android:drawableTop="@drawable/btn_tab_duanzi_selector"
+                android:text="段子"/>
+
+            <ImageView
+                style="@style/BottomTabStyle"
+                android:src="@mipmap/home_add"
+                android:visibility="invisible"
+                />
+
+            <RadioButton
+                android:id="@+id/rb_message"
+                style="@style/BottomTabStyle"
+                android:drawableTop="@drawable/btn_tab_qutu_selector"
+                android:text="趣图"/>
+
+            <RadioButton
+                android:id="@+id/rb_me"
+                style="@style/BottomTabStyle"
+                android:drawableTop="@drawable/btn_tab_me_selector"
+                android:text="我的"/>
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/rg_group"
+            android:background="@color/app_bg_color"/>
+
+        <ImageView
+            android:id="@+id/iv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/home_add"
+            />
+    </RelativeLayout>
 </RelativeLayout>
 

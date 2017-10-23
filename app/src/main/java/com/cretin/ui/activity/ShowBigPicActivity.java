@@ -1,113 +1,150 @@
 package com.cretin.ui.activity;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapRegionDecoder;
-import android.graphics.Rect;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
-import android.view.MotionEvent;
+import android.text.TextUtils;
+import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.cretin.R;
+import com.syd.oden.circleprogressdialog.core.CircleProgressDialog;
 
-public class ShowBigPicActivity extends AppCompatActivity implements View.OnTouchListener {
-    private final Rect mRect = new Rect();
-    private BitmapRegionDecoder mDecoder;
-    private ImageView mView;
-    private DisplayMetrics dm;
-    private int screenHeight;
-    private int screenWidth;
-    //private int downX;
-    private int downY;
-    private int startY;
-    private int showHeight;
-    private int imgHeight;
+import uk.co.senab.photoview.PhotoView;
+
+public class ShowBigPicActivity extends AppCompatActivity {
+    private PhotoView photoView;
+    private ImageView imageView;
+    private TextView tvDes;
+    private ImageView ivlose;
+    private ScrollView scrollView;
+    private String imageUrl = "";
+    private CircleProgressDialog circleProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dm = new DisplayMetrics();
+        setContentView(R.layout.activity_show_big_pic);
+        //全屏显示图片
+        getSupportActionBar().hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        photoView = ( PhotoView ) findViewById(R.id.photoView);
+        imageView = ( ImageView ) findViewById(R.id.imageView);
+        ivlose = ( ImageView ) findViewById(R.id.iv_close);
+        tvDes = ( TextView ) findViewById(R.id.tv_details);
+        scrollView = ( ScrollView ) findViewById(R.id.scrollView);
 
-        mView = new ImageView(this);
-        mView.setAdjustViewBounds(true);
-        mView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        mView.setScaleType(ImageView.ScaleType.CENTER);
-        mView.setOnTouchListener(this);
+        ivlose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        circleProgressDialog = new CircleProgressDialog(this);
+        //可对对话框的大小、进度条的颜色、宽度、文字的颜色、内容等属性进行设置
+        circleProgressDialog.setDialogSize(15);
+        circleProgressDialog.setProgressColor(Color.parseColor("#FFFFFF"));
+        circleProgressDialog.setTextColor(Color.parseColor("#FFFFFF"));
+        circleProgressDialog.setText("正在加载...");
+        circleProgressDialog.showDialog();  //显示对话框
 
-        setContentView(mView);
-        Glide.with(this).load("http://juheimg.oss-cn-hangzhou.aliyuncs.com/joke/201702/11/9C435181D978A3C7C54BEB2CBB296AC5.jpg")
-                .asBitmap().toBytes()
-                .into(new SimpleTarget<byte[]>() {
-                    @Override
-                    public void onResourceReady(byte[] bytes, GlideAnimation<? super byte[]> glideAnimation) {
-                        try {
-                            mDecoder = BitmapRegionDecoder.newInstance(bytes, 0, bytes.length, true);
-                            mView.post(new Runnable() {
+        //通过后缀判断图片类型
+        imageUrl = getIntent().getStringExtra("image_url");
+        String details = getIntent().getStringExtra("details");
+        if ( !TextUtils.isEmpty(details) )
+            tvDes.setText(details);
+        if ( !TextUtils.isEmpty(imageUrl) ) {
+            if ( imageUrl.endsWith(".gif")
+                    || imageUrl.endsWith(".giF")
+                    || imageUrl.endsWith(".gIf")
+                    || imageUrl.endsWith(".gIF")
+                    || imageUrl.endsWith(".Gif")
+                    || imageUrl.endsWith(".GiF")
+                    || imageUrl.endsWith(".GIf")
+                    || imageUrl.endsWith(".GIF") ) {
+                //gif图片
+                scrollView.setVisibility(View.GONE);
+                imageView.setVisibility(View.VISIBLE);
+                Glide.with(this).load(imageUrl)
+                        .listener(new RequestListener() {
+                            @Override
+                            public boolean onException(Exception arg0, Object arg1,
+                                                       Target arg2, boolean arg3) {
+                                circleProgressDialog.dismiss();
+                                Toast.makeText(ShowBigPicActivity.this,
+                                        "图片加载错误", Toast.LENGTH_SHORT).show();
+                                return false;
+                            }
 
-                                @Override
-                                public void run() {
-                                    getWindowManager().getDefaultDisplay().getMetrics(dm);
-                                    screenHeight = dm.heightPixels;
-                                    screenWidth = dm.widthPixels;
+                            @Override
+                            public boolean onResourceReady(Object arg0, Object arg1,
+                                                           Target arg2, boolean arg3, boolean arg4) {
+                                circleProgressDialog.dismiss();
+                                return false;
+                            }
+                        })
+                        .into(new GlideDrawableImageViewTarget(imageView, Integer.MAX_VALUE));
+            } else {
+                Glide.with(this).load(imageUrl)
+                        .asBitmap()
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                                super.onLoadFailed(e, errorDrawable);
+                                circleProgressDialog.dismiss();
+                                Toast.makeText(ShowBigPicActivity.this,
+                                        "图片加载错误", Toast.LENGTH_SHORT).show();
+                            }
 
-                                    mRect.set(0, 0, screenWidth, screenHeight);
-                                    Bitmap bm = mDecoder.decodeRegion(mRect, null);
-                                    mView.setImageBitmap(bm);
-
-                                    showHeight = screenHeight;
-                                    startY = 0;
-
-                                    imgHeight = mDecoder.getHeight();
+                            @Override
+                            public void onResourceReady(Bitmap mBitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                                BitmapFactory.Options options = new BitmapFactory.Options();
+                                options.inJustDecodeBounds = true;//只测量
+                                float height = mBitmap.getHeight();
+                                float width = mBitmap.getWidth();
+                                //再拿到屏幕的宽
+                                WindowManager windowManager = getWindowManager();
+                                Display display = windowManager.getDefaultDisplay();
+                                float screenWidth = display.getWidth();
+                                float screenHeight = display.getHeight();
+                                //计算如果让照片是屏幕的宽，选要乘以多少？
+                                float scale = screenWidth / width;
+                                if ( scale == 0 ) {
+                                    scale = 1;
                                 }
-                            });
-
-                        } catch ( Exception e ) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        final int action = event.getAction() & MotionEvent.ACTION_MASK;
-
-        switch ( action ) {
-            case MotionEvent.ACTION_DOWN:
-                //downX = (int) event.getX();;
-                downY = ( int ) event.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                //setImageRegion(x, y);
-                int x = ( int ) event.getX();
-                int y = ( int ) event.getY();
-
-                int deltaY = downY - y;
-                downY = y;
-
-                System.out.println(showHeight);
-                System.out.println(deltaY);
-                if ( showHeight <= screenHeight && deltaY < 0 ) {
-                    break;
-                } else if ( showHeight >= imgHeight + 500 && deltaY > 0 ) {
-                    //System.out.println("else if");
-                    break;
-                }
-                showHeight += deltaY;
-                startY += deltaY;
-                mRect.set(0, startY, screenWidth, showHeight);
-                Bitmap bm = mDecoder.decodeRegion(mRect, null);
-                mView.setImageBitmap(bm);
-                //System.out.println(deltaY);
-
-                break;
+                                //这个时候。只需让图片的宽是屏幕的宽，高乘以比例
+                                int displayHeight = ( int ) (height * scale);//要显示的高，这样避免失真
+                                //最终让图片按照宽是屏幕 高是等比例缩放的大小
+                                if ( displayHeight < screenHeight ) {
+                                    findViewById(R.id.scrollView).setEnabled(false);
+                                    displayHeight = ( int ) screenHeight;
+                                } else {
+                                    photoView.setZoomable(false);
+                                }
+                                LinearLayout.LayoutParams layoutParams =
+                                        new LinearLayout.LayoutParams(( int ) screenWidth, displayHeight);
+                                photoView.setLayoutParams(layoutParams);
+                                photoView.setImageBitmap(mBitmap);
+                                circleProgressDialog.dismiss();
+                            }
+                        });
+            }
         }
-        return true;
     }
 }

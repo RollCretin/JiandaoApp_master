@@ -16,4 +16,6 @@ public class LocalStorageKeys {
     public static final String APP_VERSION_CODE = "APP_VERSION_CODE";
     //记录当前手机登录的用户
     public static final String APP_USER_INFO = "APP_USER_INFO";
+    //记录当前手机登录的用户ID
+    public static final String APP_USER_ID = "APP_USER_ID";
 }

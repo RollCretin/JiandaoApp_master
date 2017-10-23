@@ -7,6 +7,7 @@ import com.cretin.ui.fragment.home.CommonHomeFragment;
 import com.cretin.ui.fragment.home.HomeFragment;
 import com.cretin.ui.fragment.user.CurrentFragment;
 import com.cretin.ui.fragment.user.LoginFragment;
+import com.cretin.ui.fragment.user.MeFragment;
 import com.cretin.ui.fragment.user.RegisterFragment;
 
 /**
@@ -26,4 +27,6 @@ public interface ViewInjector {
     void inject(HomeFragment homeFragment);
 
     void inject(CommonHomeFragment commonHomeFragment);
+
+    void inject(MeFragment meFragment);
 }

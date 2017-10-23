@@ -1,11 +1,8 @@
 package com.cretin.data.api.service;
 
 
-import com.cretin.data.api.model.GetCodeModel;
-import com.cretin.data.api.model.InfoModel;
 import com.cretin.data.api.model.JokesContentModel;
 import com.cretin.data.api.model.JokesImgModel;
-import com.cretin.data.api.model.LoginModel;
 import com.cretin.data.api.model.ResultModel;
 
 import retrofit2.http.Field;
@@ -19,6 +16,7 @@ import rx.Observable;
 public interface JokesService {
     /**
      * 获取所有的文字段子
+     *
      * @param page
      * @return
      */
@@ -27,7 +25,18 @@ public interface JokesService {
     Observable<ResultModel<JokesContentModel>> getJokesList(@Field( "page" ) Integer page);
 
     /**
-     * 获取所有的文字段子
+     * 获取推荐的文字段子
+     *
+     * @param page
+     * @return
+     */
+    @FormUrlEncoded
+    @POST( "/jokes/jokesRecList" )
+    Observable<ResultModel<JokesContentModel>> getJokesRecList(@Field( "page" ) Integer page);
+
+    /**
+     * 获取所有的图片段子
+     *
      * @param page
      * @return
      */
@@ -36,42 +45,50 @@ public interface JokesService {
     Observable<ResultModel<JokesImgModel>> getJokesImgList(@Field( "page" ) Integer page);
 
     /**
-     * 测试
-     * @return
-     */
-    @POST( "/weixin/app/active" )
-    Observable<ResultModel<InfoModel>> list();
-
-    /**
-     * 用户登录
+     * 获取所有的图片段子
      *
-     * @param userName
-     * @param password
+     * @param page
      * @return
      */
     @FormUrlEncoded
-    @POST( "/login/doLogin" )
-    Observable<LoginModel> login(@Field( "userName" ) String userName, @Field( "password" ) String password);
+    @POST( "/jokes/jokesImgRecList" )
+    Observable<ResultModel<JokesImgModel>> getJokesImgRecList(@Field( "page" ) Integer page);
 
     /**
-     * 获取验证码
+     * 文本段子点赞
      *
-     * @param mobilePhone
      * @return
      */
     @FormUrlEncoded
-    @POST( "/reg/getCheckNumber" )
-    Observable<GetCodeModel> getCode(@Field( "mobilePhone" ) String mobilePhone);
+    @POST( "/jokes/text/like" )
+    Observable<ResultModel> likes(@Field( "jokes_id" ) String jokes_id);
 
     /**
-     * 注册
+     * 文本段子 取消点赞
      *
-     * @param mobilePhone
      * @return
      */
     @FormUrlEncoded
-    @POST( "/reg/save" )
-    Observable<GetCodeModel> register(@Field( "mobilePhone" ) String mobilePhone,
-                                      @Field( "password" ) String password,
-                                      @Field( "checkNumber" ) String checkNumber);
+    @POST( "/jokes/text/unlike" )
+    Observable<ResultModel> unlikes(@Field( "jokes_id" ) String jokes_id);
+
+    /**
+     * 文本段子点赞
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST( "/jokes/img/like" )
+    Observable<ResultModel> imgLikes(@Field( "jokes_id" ) String jokes_id);
+
+    /**
+     * 文本段子 取消点赞
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST( "/jokes/img/unlike" )
+    Observable<ResultModel> imgUnlikes(@Field( "jokes_id" ) String jokes_id);
 }
+
+

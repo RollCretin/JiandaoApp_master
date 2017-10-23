@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.cretin.BaseApplication;
 import com.cretin.R;
-import com.cretin.data.api.model.LoginModel;
 import com.cretin.ui.base.KV;
 import com.cretin.ui.base.LocalStorageKeys;
 import com.cretin.ui.base.ParentActivity;
@@ -35,12 +34,12 @@ public class SplashActivity extends ParentActivity {
                     startActivity(intent);
                     finish();
                 }
-            }, 2000);
+            }, 1000);
         } else {
             BaseApplication.getHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    LoginModel.LoginAccountBean userInfo = KV.get(LocalStorageKeys.APP_USER_INFO);
+//                    LoginModel.LoginAccountBean userInfo = KV.get(LocalStorageKeys.APP_USER_INFO);
 //                    if ( userInfo != null ) {
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -51,7 +50,7 @@ public class SplashActivity extends ParentActivity {
 //                    }
                     finish();
                 }
-            }, 2000);
+            }, 1000);
         }
     }
 

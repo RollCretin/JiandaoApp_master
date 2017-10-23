@@ -12,7 +12,7 @@ import com.cretin.BaseApplication;
 import com.cretin.R;
 import com.cretin.core.di.HttpSubscriber;
 import com.cretin.core.di.SubscriberOnNextListener;
-import com.cretin.data.api.model.GetCodeModel;
+import com.cretin.data.api.model.ResultModel;
 import com.cretin.data.api.service.UserService;
 import com.cretin.ui.base.BackFragmentActivity;
 import com.cretin.ui.base.BaseFragment;
@@ -49,7 +49,6 @@ public class RegisterFragment extends BaseFragment {
     UserService _userService;
     private Handler handlerCode = BaseApplication.getHandler();
     private int countDown = 60;// 倒计时秒数
-    private String code;
 
     Runnable runnable = new Runnable() {
         @Override
@@ -128,17 +127,16 @@ public class RegisterFragment extends BaseFragment {
         }
         showDialog("发送验证码...");
         addSubscription(binds(_userService.getCode(userName)).subscribe(
-                new HttpSubscriber<GetCodeModel>(new SubscriberOnNextListener<GetCodeModel>() {
+                new HttpSubscriber<ResultModel>(new SubscriberOnNextListener<ResultModel>() {
                     @Override
-                    public void onNext(GetCodeModel o) {
-//                        if ( o.isIsOk() ) {
-//                            _toastHelper.show("验证码发送成功");
-//                            tvCode.setEnabled(false);
-//                            handlerCode.postDelayed(runnable, 1000);
-//                            code = o.getData();
-//                        } else {
-//                            _toastHelper.show(o.getMessage());
-//                        }
+                    public void onNext(ResultModel o) {
+                        if ( o.getCode() == 1 ) {
+                            _toastHelper.show("验证码发送成功");
+                            tvCode.setEnabled(false);
+                            handlerCode.postDelayed(runnable, 1000);
+                        } else {
+                            _toastHelper.show(o.getMessage());
+                        }
                     }
 
                     @Override
@@ -178,13 +176,13 @@ public class RegisterFragment extends BaseFragment {
         }
         showDialog("正在注册");
         addSubscription(binds(_userService.register(userName, password, codeStr)).
-                subscribe(new HttpSubscriber<GetCodeModel>(new SubscriberOnNextListener<GetCodeModel>() {
+                subscribe(new HttpSubscriber<ResultModel>(new SubscriberOnNextListener<ResultModel>() {
                     @Override
-                    public void onNext(GetCodeModel o) {
-//                        _toastHelper.show(o.getMessage());
-//                        if ( o.isIsOk() ) {
-//                            (( BackFragmentActivity ) mActivity).removeFragment();
-//                        }
+                    public void onNext(ResultModel o) {
+                        _toastHelper.show(o.getMessage());
+                        if ( o.getCode() == 1 ) {
+                            (( BackFragmentActivity ) mActivity).removeFragment();
+                        }
                     }
 
                     @Override

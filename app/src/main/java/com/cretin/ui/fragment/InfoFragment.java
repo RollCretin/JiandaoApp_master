@@ -5,10 +5,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cretin.R;
-import com.cretin.core.di.HttpSubscriber;
-import com.cretin.core.di.SubscriberOnNextListener;
-import com.cretin.data.api.model.InfoModel;
-import com.cretin.data.api.model.ResultModel;
 import com.cretin.data.api.service.UserService;
 import com.cretin.ui.base.BaseFragment;
 import com.cretin.util.ToastHelper;
@@ -18,7 +14,6 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import retrofit2.Retrofit;
-import rx.Subscription;
 
 public class InfoFragment extends BaseFragment {
     public static final String TAG = "InfoFragment";
@@ -55,29 +50,29 @@ public class InfoFragment extends BaseFragment {
 
     @Override
     protected void refrehPageData() {
-        Subscription subscribe = binds(_topService.list()).subscribe(new HttpSubscriber<ResultModel<InfoModel>>(new SubscriberOnNextListener() {
-            @Override
-            public void onNext(Object o) {
-                ResultModel<InfoModel> result = ( ResultModel<InfoModel> ) o;
-                StringBuffer strBuffer = new StringBuffer();
-                for ( InfoModel.NewListBean newS :
-                        result.getData().getNew_list() ) {
-                    strBuffer.append(newS.getDisc() + "    " + newS.getImg() + "\n");
-                }
-                tvContent.setText(strBuffer.toString());
-            }
-
-            @Override
-            public void onCompleted() {
-                showContentView();
-            }
-
-            @Override
-            public void onError(Throwable e, int type) {
-
-            }
-        }, this));
-        addSubscription(subscribe);
+//        Subscription subscribe = binds(_topService.list()).subscribe(new HttpSubscriber<ResultModel<InfoModel>>(new SubscriberOnNextListener() {
+//            @Override
+//            public void onNext(Object o) {
+//                ResultModel<InfoModel> result = ( ResultModel<InfoModel> ) o;
+//                StringBuffer strBuffer = new StringBuffer();
+//                for ( InfoModel.NewListBean newS :
+//                        result.getData().getNew_list() ) {
+//                    strBuffer.append(newS.getDisc() + "    " + newS.getImg() + "\n");
+//                }
+//                tvContent.setText(strBuffer.toString());
+//            }
+//
+//            @Override
+//            public void onCompleted() {
+//                showContentView();
+//            }
+//
+//            @Override
+//            public void onError(Throwable e, int type) {
+//
+//            }
+//        }, this));
+//        addSubscription(subscribe);
     }
 
 
